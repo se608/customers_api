@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# Project specific
+data/customers.json
+*.log
+
+# Docker
+.dockerignore

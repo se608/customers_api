@@ -1,0 +1,24 @@
+services:
+  customers-api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  simulator:
+    build: .
+    command: ["python", "-m", "simulator.simulator"]
+    depends_on:
+      customers-api:
+        condition: service_healthy
+    environment:
+      - API_BASE_URL=http://customers-api:8000
+    profiles: ["simulator"]
